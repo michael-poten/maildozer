@@ -12,7 +12,7 @@ class Config {
         val threadPoolExecutor = ThreadPoolTaskExecutor()
         threadPoolExecutor.corePoolSize = 2
         threadPoolExecutor.maxPoolSize = 2
-        threadPoolExecutor.setQueueCapacity(10)
+        threadPoolExecutor.setQueueCapacity(1000)
         threadPoolExecutor.initialize()
 
         return threadPoolExecutor
@@ -23,7 +23,7 @@ class Config {
         val threadPoolExecutor = ThreadPoolTaskExecutor()
         threadPoolExecutor.corePoolSize = 10
         threadPoolExecutor.maxPoolSize = 10
-        threadPoolExecutor.setQueueCapacity(100)
+        threadPoolExecutor.setQueueCapacity(1000)
         threadPoolExecutor.initialize()
 
         return threadPoolExecutor
