@@ -1,10 +1,10 @@
 package de.mroedel.maildozer.repositories
 
 import de.mroedel.maildozer.model.Mail
-import org.springframework.data.mongodb.repository.MongoRepository
+import org.springframework.data.jpa.repository.JpaRepository
 
 
-interface MailRepository : MongoRepository<Mail?, String?> {
+interface MailRepository : JpaRepository<Mail?, String?> {
 
 
 }

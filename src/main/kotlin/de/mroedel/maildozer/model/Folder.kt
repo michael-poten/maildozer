@@ -1,8 +1,13 @@
 package de.mroedel.maildozer.model
 
-import org.springframework.data.mongodb.core.mapping.Document
+import javax.persistence.Entity
+import javax.persistence.Id
 
-@Document
-class Folder(val folderPath: String) {
+@Entity
+class Folder {
+
+    @Id
+    var id: String? = null
+    var folderPath: String? = null
 
 }

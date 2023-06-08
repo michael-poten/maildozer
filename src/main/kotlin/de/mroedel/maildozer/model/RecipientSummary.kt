@@ -1,13 +1,11 @@
 package de.mroedel.maildozer.model
 
-import org.springframework.data.mongodb.core.mapping.Document
-
-@Document
-class RecipientSummary(var from: MailRecipient,
+class RecipientSummary(var address: String? = null,
+                       var name: String? = null,
                        var exampleMails: List<Mail>,
                        var amountMails: Int = 0) {
 
     override fun toString(): String {
-        return "$from - $amountMails"
+        return "$address - $amountMails"
     }
 }

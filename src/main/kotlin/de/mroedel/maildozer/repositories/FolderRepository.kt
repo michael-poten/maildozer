@@ -1,10 +1,10 @@
 package de.mroedel.maildozer.repositories
 
 import de.mroedel.maildozer.model.Folder
-import org.springframework.data.mongodb.repository.MongoRepository
+import org.springframework.data.jpa.repository.JpaRepository
 
 
-interface FolderRepository : MongoRepository<Folder?, String?> {
+interface FolderRepository : JpaRepository<Folder?, String?> {
 
 
 }

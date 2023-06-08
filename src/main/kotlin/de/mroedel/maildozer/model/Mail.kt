@@ -1,16 +1,24 @@
 package de.mroedel.maildozer.model
 
-import org.springframework.data.mongodb.core.mapping.Document
 import java.util.*
+import javax.persistence.Entity
+import javax.persistence.Id
 
-@Document
-class Mail(val messageId: String?,
-           var imapFolder: String,
-           var from: MailRecipient,
-           var subject: String,
-           var sentDate: Date) {
+@Entity
+class Mail {
+
+    @Id
+    var id: String? = null
+    var messageId: String? = null
+    var imapFolder: String? = null
+    var address: String? = null
+    var name: String? = null
+    var subject: String? = null
+    var sentDate: Date? = null
+    var content: String? = null
+    var size: Int? = null
 
     override fun toString(): String {
-        return "$sentDate ::: $from ::: $subject"
+        return "$sentDate ::: $address ::: $subject"
     }
 }

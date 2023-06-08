@@ -61,7 +61,7 @@ class MaildozerCommands {
             val fromAmount = recipientSummary.amountMails
 
             println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            println("From:      ${recipientSummary.from}")
+            println("From:      ${recipientSummary.address}")
 
             for ((index, value) in recipientSummary.exampleMails.withIndex()) {
                 if (index == 0) {
@@ -84,11 +84,11 @@ class MaildozerCommands {
 
             when (answer) {
                 "d" -> {
-                    checkedSummaries.add(recipientSummary.from.address.toLowerCase())
-                    recipientSummaries.remove(recipientSummaries.find { it.from.address.equals(recipientSummary.from.address) })
+                    checkedSummaries.add(recipientSummary.address!!.toLowerCase())
+                    recipientSummaries.remove(recipientSummaries.find { it.address.equals(recipientSummary.address) })
 
                     CompletableFuture.supplyAsync(Supplier {
-                        mailService.deleteMailsByFrom(recipientSummary.from.address)
+                        mailService.deleteMailsByFrom(recipientSummary.address!!)
                     }, backgroundTaskExecutor)
 
                 }
@@ -101,11 +101,11 @@ class MaildozerCommands {
 
                     val folderSelected = lineReader.readLine("Answer: ")
 
-                    checkedSummaries.add(recipientSummary.from.address.toLowerCase())
-                    recipientSummaries.remove(recipientSummaries.find { it.from.address.equals(recipientSummary.from.address) })
+                    checkedSummaries.add(recipientSummary.address!!.toLowerCase())
+                    recipientSummaries.remove(recipientSummaries.find { it.address.equals(recipientSummary.address) })
 
                     CompletableFuture.supplyAsync(Supplier {
-                        mailService.moveMailsToFolder(recipientSummary.from.address, folderList.get(folderSelected.toInt()))
+                        mailService.moveMailsToFolder(recipientSummary.address!!, folderList.get(folderSelected.toInt()))
                     }, backgroundTaskExecutor)
 
                 }
@@ -144,10 +144,17 @@ class MaildozerCommands {
 
     @ShellMethod("Lists all folders." )
     fun folder(@ShellOption("list") list: Boolean) {
-
         if (list) {
-            mailService!!.getFolderList().map {  }.forEach { println("$it.fullName: $it.messageCount") }
+            mailService!!.getFolderList().forEach { println("$it") }
         }
+    }
+
+    @ShellMethod("Count mails older than 2 years." )
+    fun countMails() {
+
+        val amount = mailService!!.countMails()
+        println("Amount mails older: " + amount)
+
     }
 
 

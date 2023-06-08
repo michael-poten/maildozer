@@ -4,13 +4,15 @@ import de.mroedel.maildozer.model.Folder
 import de.mroedel.maildozer.model.Mail
 import de.mroedel.maildozer.model.RecipientSummary
 import de.mroedel.maildozer.repositories.FolderRepository
-import microsoft.exchange.webservices.data.core.service.item.EmailMessage
-import microsoft.exchange.webservices.data.core.service.item.Item
+import jakarta.mail.MessagingException
+import jakarta.mail.search.ReceivedDateTerm
+import jakarta.mail.search.SearchTerm
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.IOException
-import javax.mail.FetchProfile
-import javax.mail.MessagingException
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
 
 @Service
 class MailService {
@@ -37,24 +39,33 @@ class MailService {
     }
 
     @Throws(MessagingException::class)
+    fun countMails(): Int {
+        return mailOperationService!!.countMails()
+    }
+
+    @Throws(MessagingException::class)
     fun deleteMailsByFrom(from: String): Int {
         return mailOperationService!!.deleteMailsByFrom(from)
     }
 
     @Throws(MessagingException::class)
-    fun getFolderList(): List<javax.mail.Folder> {
+    fun getFolderList(): List<jakarta.mail.Folder> {
         val folderList = mailOperationService!!.getFolderList()
 
         folderRepository!!.deleteAll()
         for (folder in folderList) {
-            folderRepository!!.save(Folder(folder.fullName))
+            val folderEntity = Folder()
+            folderEntity.id = UUID.randomUUID().toString()
+            folderEntity.folderPath = folder.fullName
+
+            folderRepository!!.save(folderEntity)
         }
 
         return folderList
     }
 
     @Throws(MessagingException::class)
-    fun getFolder(path: String): javax.mail.Folder? {
+    fun getFolder(path: String): jakarta.mail.Folder? {
         return mailOperationService!!.getFolderByPath(path)
     }
 
@@ -64,7 +75,7 @@ class MailService {
     }
 
     @Throws(MessagingException::class)
-    fun moveMailsToFolder(fromAddress: String, folder: javax.mail.Folder): Int {
+    fun moveMailsToFolder(fromAddress: String, folder: jakarta.mail.Folder): Int {
         return mailOperationService!!.moveAllFromAddressToFolder(fromAddress, folder)
     }
 
